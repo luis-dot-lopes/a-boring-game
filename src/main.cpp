@@ -35,8 +35,10 @@ bool keysPressed[242];
 bool keysReleased[242];
 bool keysJustPressed[242];
 
+//Game variables
 Box player(0, 0, 20, 20);
 Box enemies[NUM_OF_ENEMIES];
+int speeds[NUM_OF_ENEMIES];
 
 //Functions
 bool init();
@@ -194,6 +196,8 @@ void start() {
         Box newEnemy(x, y, 20, 20);
 
         enemies[i] = newEnemy;
+
+        speeds[i] = rand() % 7 - 3;
     }
 
     gameover = false;
@@ -328,6 +332,13 @@ int main( int argc, char* args[] ) {
             won = true;
             gameover = true;
             continue;
+        }
+
+        for(int i = 0; i < NUM_OF_ENEMIES; i++) {
+            enemies[i].y += speeds[i];
+            if(enemies[i].y < 0 || enemies[i].y + 20 > SCREEN_HEIGHT) {
+                speeds[i] *= -1;
+            }
         }
 
         SDL_RenderClear( renderer );
